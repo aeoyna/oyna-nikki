@@ -1,4 +1,5 @@
 <?php
+//Can you see it?
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
 $username = 'oyna_0';
