@@ -1,6 +1,3 @@
-### index.php
-
-```php
 <?php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -102,4 +99,3 @@ try {
     echo "データベースエラー: " . $e->getMessage();
 }
 ?>
-```
