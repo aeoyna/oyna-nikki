@@ -1,27 +1,48 @@
 <?php
-// new.php - 新規投稿用のモーダル
+// データベース接続情報
+$dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
+$username = 'oyna_0';
+$password = '8pzvjU00';
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+
+try {
+    $pdo = new PDO($dsn, $username, $password, $options);
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // フォームからのデータ取得
+        $days = $_POST['days'] ?? 0;
+        $content = $_POST['content'] ?? '';
+        
+        // データベースに新規投稿を挿入
+        $sql = "INSERT INTO blog (days, content, post_at) VALUES (:days, :content, NOW())";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':days', $days, PDO::PARAM_INT);
+        $stmt->bindParam(':content', $content, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        // 投稿成功メッセージ
+        echo "<p>新しい投稿が作成されました。</p>";
+        echo "<script>setTimeout(() => { window.location.reload(); }, 1500);</script>"; // 1.5秒後にリロード
+    }
+} catch (PDOException $e) {
+    echo "データベースエラー: " . $e->getMessage();
+}
 ?>
-<div id="new-post-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
-    <div style="background: white; padding: 20px; margin: 10% auto; width: 50%; border-radius: 10px;">
-        <h2>新規投稿</h2>
-        <form action="index.php" method="post">
-            <div>本文</div>
-            <textarea name="content" rows="4" cols="50"></textarea>
-            <br>
-            <input type="submit" name="wri" value="保存">
-            <button type="button" onclick="closeNewPostModal()">キャンセル</button>
-        </form>
-    </div>
+
+<!-- 新規投稿フォーム -->
+<div style="background:white; padding:20px; border-radius:5px;">
+    <h2>新規投稿</h2>
+    <form method="POST" action="">
+        <label for="days">経過日数:</label>
+        <input type="number" name="days" id="days" required>
+        <br><br>
+        <label for="content">内容:</label>
+        <textarea name="content" id="content" rows="4" required></textarea>
+        <br><br>
+        <button type="submit">投稿する</button>
+        <button type="button" onclick="closeModal()">キャンセル</button>
+    </form>
 </div>
-
-<script>
-function openNewPostModal() {
-    document.getElementById('new-post-modal').style.display = 'block';
-}
-
-function closeNewPostModal() {
-    document.getElementById('new-post-modal').style.display = 'none';
-}
-</script>
-
-<button onclick="openNewPostModal()" style="position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 24px; border-radius: 50%; background: #007bff; color: white; border: none;">+</button>
