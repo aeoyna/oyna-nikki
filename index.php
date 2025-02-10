@@ -122,8 +122,8 @@ try {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        width: 50px;
-        height: 50px;
+        width: 60px;
+        height: 60px;
         background-color: #007bff;
         color: white;
         font-size: 30px;
