@@ -85,7 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea name="content" id="content" rows="4" required></textarea>
         <button type="submit" name="wri">投稿</button>
     </form>
-    <button onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; border: none; background: transparent; font-size: 1.5rem; cursor: pointer;">&times;</button>
+    <button onclick="document.getElementById('postForm').style.display='none'" 
+        style="position: absolute; top: 10px; right: 10px; border: none; background: transparent; font-size: 1.5rem; cursor: pointer;">&times;
+    </button>
+
+    
 </div>
 <script>
     function closeModal() {
