@@ -113,6 +113,11 @@ try {
 
     // 新規投稿用フォーム
     ?>
+    <a href="/">
+        <div class="post-btn">
+            <i class="fas fa-plus"></i>
+        </div>
+    </a>
     <h2>新規投稿</h2>
     <form action="nikki.php" method="post">
         <div>本文</div>
