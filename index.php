@@ -113,7 +113,7 @@ try {
 
     // 新規投稿用フォーム
     ?>
-    <a href="nikki.php">
+    <a href="new.php">
     <div class="floating-btn">+</div>
     </a>
     
