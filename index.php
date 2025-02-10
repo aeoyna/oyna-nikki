@@ -116,7 +116,7 @@ try {
     
     <button class="floating-btn" onclick="openNewPostModal()">+</button>
     
-    <div id="new-post-modal" style="display:none; position:fixed; top:10; left:10; width:90%; height:90%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+    <div id="new-post-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
     
     <script>
     function openNewPostModal() {
