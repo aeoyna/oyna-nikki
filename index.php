@@ -113,11 +113,38 @@ try {
 
     // 新規投稿用フォーム
     ?>
-    <a href="/">
-        <div class="post-btn">
-            <i class="fas fa-plus"></i>
-        </div>
+    <a href="nikki.php">
+    <div class="floating-btn">+</div>
     </a>
+    
+    <style>
+    .floating-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #007bff;
+        color: white;
+        font-size: 30px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    
+    .floating-btn:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    }
+    </style>
+
+
     <h2>新規投稿</h2>
     <form action="nikki.php" method="post">
         <div>本文</div>
