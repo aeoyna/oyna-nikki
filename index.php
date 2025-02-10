@@ -113,20 +113,40 @@ try {
 
     // 新規投稿用フォーム
     ?>
-    <a href="new.php">
-    <div class="floating-btn">+</div>
-    </a>
+    
+    <button class="floating-btn" onclick="openNewPostModal()">+</button>
+    
+    <div id="new-post-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+    
+    <script>
+    function openNewPostModal() {
+        const modalContainer = document.getElementById('new-post-modal');
+        fetch('new.php')
+            .then(response => response.text())
+            .then(html => {
+                modalContainer.innerHTML = html;
+                modalContainer.style.display = 'block';
+            })
+            .catch(error => console.error('エラー:', error));
+    }
+    
+    function closeNewPostModal() {
+        const modalContainer = document.getElementById('new-post-modal');
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = '';
+    }
+    </script>
     
     <style>
     .floating-btn {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         background-color: #007bff;
         color: white;
-        font-size: 30px;
+        font-size: 24px;
         font-weight: bold;
         display: flex;
         align-items: center;
@@ -134,7 +154,8 @@ try {
         border-radius: 50%;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         cursor: pointer;
-        text-decoration: none;
+        border: none;
+        outline: none;
         transition: 0.3s;
     }
     
