@@ -90,6 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
     function closeModal() {
             // モーダルを閉じる
-            document.querySelector('.modal').style.display = 'none';
+            document.querySelector('postFrom').style.display = 'none';
     }
 </script>
