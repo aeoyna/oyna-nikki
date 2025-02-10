@@ -71,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!-- 新規投稿フォーム -->
-<div style="background:white; padding:20px; border-radius:5px;">
+<div id="postForm" style="background:white; padding:20px; border-radius:5px; position:relative;">
+    <button onclick="closeForm()" style="position:absolute; top:10px; right:10px;">×</button>
     <h2>新規投稿</h2>
     <?php if ($errorMessage): ?>
         <p style="color: red;"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
@@ -86,3 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" name="wri">投稿</button>
     </form>
 </div>
+
+<script>
+function closeForm() {
+    document.getElementById("postForm").style.display = "none";
+}
+</script>
