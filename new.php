@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <!-- 新規投稿フォーム -->
-<div id="postForm" calss="modal" style="background:white; padding:20px; border-radius:5px; position:relative;">
+<div id="postForm" class="modal" style="background:white; padding:20px; border-radius:5px; position:relative;">
 
     <h2>新規投稿</h2>
     <?php if ($errorMessage): ?>
