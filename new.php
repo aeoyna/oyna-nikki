@@ -94,6 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         document.querySelector('#postForm').style.display = 'none';
         
         // リダイレクトする
-        window.location.href = 'nikki.php';  // index.php でも OK
+        window.location.href = 'index.php';  // index.php でも OK
     }
 </script>
