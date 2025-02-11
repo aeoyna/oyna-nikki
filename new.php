@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 <script>
     function closeModal() {
-        document.querySelector('.modal').style.display = 'none';
+        document.querySelector('postForm').style.display = 'none';
 }
 
     }
