@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>日記投稿</title>
     <style>
         /* モーダルのスタイル */
-        .modal {
+        #postForm {
             display: none;
             position: fixed;
             top: 50%;
@@ -87,10 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: white;
             padding: 20px;
             border-radius: 5px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
-        .modal-overlay {
+
+        /* 背景のオーバーレイ */
+        #overlay {
             display: none;
             position: fixed;
             top: 0;
@@ -100,6 +102,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+
+        /* 閉じるボタン */
         .close-btn {
             position: absolute;
             top: 10px;
@@ -114,17 +118,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
     <!-- モーダルを開くボタン -->
-    <button onclick="openModal()">新規投稿</button>
+    <button onclick="openModal()">新規投稿を開く</button>
 
-    <!-- モーダルの背景 -->
-    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
+    <!-- オーバーレイ -->
+    <div id="overlay" onclick="closeModal()"></div>
 
     <!-- 新規投稿フォーム (モーダル) -->
-    <div id="postForm" class="modal">
+    <div id="postForm">
         <h2>新規投稿</h2>
-        <p id="errorMessage" style="color: red;">
-            <?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?>
-        </p>
+        <?php if ($errorMessage): ?>
+            <p style="color: red;"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
         <form method="POST" action="">
             <label for="days">経過日数:</label>
             <input type="number" name="days" id="days" value="<?= calculateDays() ?>" required>
@@ -138,18 +142,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("JavaScript 読み込み完了");
+
             function openModal() {
-                document.getElementById('postForm').style.display = 'block';
-                document.getElementById('modalOverlay').style.display = 'block';
+                console.log("モーダルを開く");
+                document.querySelector("#postForm").style.display = "block";
+                document.querySelector("#overlay").style.display = "block";
             }
 
             function closeModal() {
-                document.getElementById('postForm').style.display = 'none';
-                document.getElementById('modalOverlay').style.display = 'none';
+                console.log("モーダルを閉じる");
+                document.querySelector("#postForm").style.display = "none";
+                document.querySelector("#overlay").style.display = "none";
             }
 
-            // グローバルスコープで関数を使えるようにする
+            // グローバルスコープに関数を登録
             window.openModal = openModal;
             window.closeModal = closeModal;
         });
