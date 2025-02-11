@@ -90,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 <script>
     function closeModal() {
-        document.querySelector('#postForm').style.display = 'none';
+        console.log("closeModal called");
+        document.querySelector('#postForm').style.display = 'hidden';
     }
 </script>
