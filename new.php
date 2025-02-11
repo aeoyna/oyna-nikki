@@ -90,8 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
     function closeModalAndRedirect() {
-        // モーダルを非表示にする
-        document.querySelector('#postForm').style.display = 'none';
         
         // リダイレクトする
         window.location.href = 'index.php';  // index.php でも OK
