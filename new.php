@@ -1,3 +1,4 @@
+
 <?php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -70,98 +71,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日記投稿</title>
-    <style>
-        /* モーダルのスタイル */
-        #postForm {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
+<!-- 新規投稿フォーム -->
+<div id="postForm" class="modal" style="background:white; padding:20px; border-radius:5px; position:relative;">
 
-        /* 背景のオーバーレイ */
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
-
-        /* 閉じるボタン */
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            border: none;
-            background: transparent;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- モーダルを開くボタン -->
-    <button onclick="openModal()">新規投稿を開く</button>
-
-    <!-- オーバーレイ -->
-    <div id="overlay" onclick="closeModal()"></div>
-
-    <!-- 新規投稿フォーム (モーダル) -->
-    <div id="postForm">
-        <h2>新規投稿</h2>
-        <?php if ($errorMessage): ?>
-            <p style="color: red;"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-        <form method="POST" action="">
-            <label for="days">経過日数:</label>
-            <input type="number" name="days" id="days" value="<?= calculateDays() ?>" required>
-            <br><br>
-            <label for="content">内容:</label>
-            <textarea name="content" id="content" rows="4" required></textarea>
-            <br><br>
-            <button type="submit" name="wri">投稿</button>
-        </form>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("JavaScript 読み込み完了");
-
-            function openModal() {
-                console.log("モーダルを開く");
-                document.querySelector("#postForm").style.display = "block";
-                document.querySelector("#overlay").style.display = "block";
-            }
-
-            function closeModal() {
-                console.log("モーダルを閉じる");
-                document.querySelector("#postForm").style.display = "none";
-                document.querySelector("#overlay").style.display = "none";
-            }
-
-            // グローバルスコープに関数を登録
-            window.openModal = openModal;
-            window.closeModal = closeModal;
-        });
-    </script>
-
-</body>
-</html>
+    <h2>新規投稿</h2>
+    <?php if ($errorMessage): ?>
+        <p style="color: red;"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php endif; ?>
+    <form method="POST" action="">
+        <label for="days">経過日数:</label>
+        <input type="number" name="days" id="days" value="<?= calculateDays() ?>" required>
+        <br><br>
+        <label for="content">内容:</label>
+        <textarea name="content" id="content" rows="4" required></textarea>
+        <button type="submit" name="wri">投稿</button>
+    </form>
+    <button onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; border: none; background: transparent; font-size: 1.5rem; cursor: pointer;">&times;</button>
+</div>
+<script>
+    function closeModal() {
+        document.querySelector('#postForm').style.display = 'none';
+    }
+</script>
