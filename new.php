@@ -73,7 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- 新規投稿フォーム -->
 <div id="postForm" class="modal" style="background:white; padding:20px; border-radius:5px; position:relative;">
-
     <h2>新規投稿</h2>
     <?php if ($errorMessage): ?>
         <p style="color: red;"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
@@ -88,9 +87,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
     <button onclick="closeModal()" style="position: absolute; top: 10px; right: 10px; border: none; background: transparent; font-size: 1.5rem; cursor: pointer;">&times;</button>
 </div>
+
 <script>
     function closeModal() {
         console.log("closeModal called");
-        document.querySelector('#postForm').style.display = 'hidden';
+        const modal = document.getElementById('postForm');
+        modal.style.display = 'none'; // モーダルを非表示にする
     }
 </script>
