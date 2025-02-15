@@ -1,4 +1,3 @@
-
 <?php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -71,8 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!-- 新規投稿フォーム -->
-<div id="postForm" class="modal" style="background:white; padding:20px; border-radius:5px; position:relative;">
+<!-- モーダルの背景 (オーバーレイ) -->
+<div id="modalOverlay" class="modal-overlay" onclick="closeModal()"></div>
+
+<!-- 新規投稿フォーム (モーダル) -->
+<div id="postForm" class="modal">
     <h2>新規投稿</h2>
     <?php if ($errorMessage): ?>
         <p style="color: red;"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
@@ -85,13 +87,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea name="content" id="content" rows="4" required></textarea>
         <button type="submit" name="wri">投稿</button>
     </form>
-    <button onclick="closeModalAndRedirect()" style="position: absolute; top: 10px; right: 10px; border: none; background: transparent; font-size: 1.5rem; cursor: pointer;">&times;</button>
+    <button onclick="closeModal()" class="close-btn">&times;</button>
 </div>
 
+<!-- モーダル制御用の JavaScript -->
 <script>
-    function closeModalAndRedirect() {
-        
-        // リダイレクトする
-        window.location.href = 'index.php';  // index.php でも OK
+    function openModal() {
+        document.getElementById("postForm").style.display = "block";
+        document.getElementById("modalOverlay").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("postForm").style.display = "none";
+        document.getElementById("modalOverlay").style.display = "none";
     }
 </script>
+
+<!-- モーダルを開くボタン -->
+<button onclick="openModal()">新規投稿</button>
+
+<!-- モーダルのスタイル (CSS) -->
+<style>
+    /* モーダルの背景 */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    /* モーダル本体 */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1001;
+    }
+
+    /* 閉じるボタン */
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border: none;
+        background: transparent;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+</style>
