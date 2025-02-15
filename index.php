@@ -8,166 +8,194 @@ $options = [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 ];
 
-try {
-    $pdo = new PDO($dsn, $username, $password, $options);
-} catch (PDOException $e) {
-    die("データベースエラー: " . $e->getMessage());
-}
-
 // daysを計算する関数
 function calculateDays($base_date_str = '2021-01-13') {
     $base_date = new DateTime($base_date_str);
     $current_date = new DateTime();
     $interval = $base_date->diff($current_date);
-    return $interval->days;
+    return $interval->days; // 日数を返す
 }
 
-// 並び順を取得
-$order = isset($_GET['order']) && $_GET['order'] === 'asc' ? 'ASC' : 'DESC';
+try {
+    $pdo = new PDO($dsn, $username, $password, $options);
 
-// エラーメッセージの初期化
-$errorMessage = '';
+    // 並び順を取得
+    $order = isset($_GET['order']) && $_GET['order'] === 'asc' ? 'ASC' : 'DESC';
 
-// 投稿処理
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $content = $_POST["content"] ?? '';
-    $days = $_POST["days"] ?? null;
+    // エラーメッセージの初期化
+    $errorMessage = '';
 
-    if (empty($days)) {
-        $days = calculateDays();
-    }
+    // 投稿があった場合の処理
+    if (isset($_POST["wri"])) {
+        $content = $_POST["content"];
+        $days = isset($_POST["days"]) ? $_POST["days"] : null;
 
-    // 同じ days の投稿があるかチェック
-    $checkSql = "SELECT COUNT(*) FROM blog WHERE days = :days";
-    $checkStmt = $pdo->prepare($checkSql);
-    $checkStmt->bindParam(':days', $days, PDO::PARAM_INT);
-    $checkStmt->execute();
-    $exists = $checkStmt->fetchColumn();
+        if (empty($days)) {
+            // days が空の場合は基準日からの日数を設定
+            $days = calculateDays(); // 関数で計算
+        }
 
-    if ($exists > 0) {
-        $errorMessage = "エラー: 同じ日付の投稿はできません。";
-    } else {
-        if (isset($_POST["edit_id"])) {
-            // 編集処理
-            $sql = "UPDATE blog SET days = :days, content = :content, post_at = NOW() WHERE id = :id";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':id', $_POST["edit_id"], PDO::PARAM_INT);
+        // 同じdaysが存在するかチェック
+        $checkSql = "SELECT COUNT(*) FROM blog WHERE days = :days";
+        $checkStmt = $pdo->prepare($checkSql);
+        $checkStmt->bindParam(':days', $days);
+        $checkStmt->execute();
+        $exists = $checkStmt->fetchColumn();
+
+        if ($exists > 0) {
+            $errorMessage = "エラー: 同じ日付の投稿はできません。";
         } else {
-            // 新規投稿処理
-            $sql = "INSERT INTO blog (days, content, post_at) VALUES (:days, :content, NOW())";
-            $stmt = $pdo->prepare($sql);
-        }
-        
-        $stmt->bindParam(':days', $days, PDO::PARAM_INT);
-        $stmt->bindParam(':content', $content, PDO::PARAM_STR);
-        $stmt->execute();
+            if (isset($_POST["edit_id"])) {
+                // 編集の場合
+                $sql = "UPDATE blog SET days = :days, content = :content, post_at = NOW() WHERE id = :id";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':days', $days);
+                $stmt->bindParam(':content', $content);
+                $stmt->bindParam(':id', $_POST["edit_id"]);
+            } else {
+                // 新規投稿の場合
+                $sql = "INSERT INTO blog (days, content, post_at) VALUES (:days, :content, NOW())";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':days', $days);
+                $stmt->bindParam(':content', $content);
+            }
 
-        // リダイレクト
-        header("Location: index.php");
-        exit;
+            $stmt->execute();
+
+            // データの追加または更新に成功したらリダイレクト
+            header("Location: nikki.php");
+            exit; // リダイレクト後はスクリプトの実行を停止
+        }
     }
-}
 
-// 投稿リストを取得
-$sql = "SELECT * FROM blog ORDER BY days $order";
-$stmt = $pdo->query($sql);
-$posts = $stmt->fetchAll();
-?>
+    // 並び順変更のリンク
+    $newOrder = $order === 'ASC' ? 'desc' : 'asc';
+    $orderLabel = $order === 'ASC' ? '小さい順' : '大きい順';
+    echo "<a href='nikki.php?order=$newOrder' style='margin-bottom: 20px; display: inline-block;'>$orderLabelに並び替え</a>";
 
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日記システム</title>
+    // daysを計算して表示
+    $calculatedDays = calculateDays();
+    echo "<h2 style='display: inline;'>今日は $calculatedDays 日</h2>";
+
+    // 検索フォームを右に配置
+    echo '<form action="nikki.php" method="get" style="display: inline-block; margin-left: 20px;">';
+    echo '<input type="text" name="search" placeholder="検索キーワードを入力" style="padding: 5px;">';
+    echo '<input type="submit" value="検索" style="padding: 5px;">';
+    echo '</form>';
+
+    // エラーメッセージを表示
+    if (!empty($errorMessage)) {
+        echo "<p style='color: red;'>$errorMessage</p>";
+    }
+
+    // 検索キーワードの処理
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    if (!empty($search)) {
+        $sql = "SELECT id, days, content, post_at FROM blog WHERE content LIKE :search ORDER BY days $order";
+        $stmt = $pdo->prepare($sql);
+        $searchKeyword = "%$search%";
+        $stmt->bindParam(':search', $searchKeyword);
+        $stmt->execute();
+    } else {
+        $sql = "SELECT id, days, content, post_at FROM blog ORDER BY days $order";
+        $stmt = $pdo->query($sql);
+    }
+
+    // データ表示
+    foreach ($stmt as $row) {
+        echo "<div class='post' onclick='openModal(" . $row["id"] . ")' style='cursor: pointer;'>";
+        echo "<p><strong>" . htmlspecialchars($row["days"], ENT_QUOTES, 'UTF-8') . " 日</strong></p>";
+        echo "<p>" . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . "</p>";
+        echo "<hr>";
+        echo "</div>";
+    }
+
+    // 新規投稿用フォーム
+    ?>
+    
+    <button class="floating-btn" onclick="openNewPostModal()">+</button>
+    
+    <div id="new-post-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+    
+    <script>
+    function openNewPostModal() {
+        const modalContainer = document.getElementById('new-post-modal');
+        fetch('new.php')
+            .then(response => response.text())
+            .then(html => {
+                modalContainer.innerHTML = html;
+                modalContainer.style.display = 'block';
+            })
+            .catch(error => console.error('エラー:', error));
+    }
+    
+    function closeNewPostModal() {
+        const modalContainer = document.getElementById('new-post-modal');
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = '';
+    }
+    </script>
+    
     <style>
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
-            z-index: 1000;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            border: none;
-            background: transparent;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+    .floating-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background-color: #007bff;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        border: none;
+        outline: none;
+        transition: 0.3s;
+    }
+    
+    .floating-btn:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    }
     </style>
-</head>
-<body>
 
-    <h1>日記システム</h1>
 
-    <button onclick="openModal()">新規投稿</button>
+    <h2>新規投稿</h2>
+    <form action="nikki.php" method="post">
+        <div>本文</div>
+        <textarea name="content" rows="4" cols="50"></textarea>
+        <br>
+        <input type="submit" name="wri" value="保存">
+    </form>
 
-    <!-- モーダルオーバーレイ -->
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
-
-    <!-- 新規投稿フォーム（モーダル） -->
-    <div id="postForm" class="modal">
-        <h2>新規投稿</h2>
-        <?php if ($errorMessage): ?>
-            <p style="color: red;"><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
-        <?php endif; ?>
-        <form method="POST" action="">
-            <label for="days">経過日数:</label>
-            <input type="number" name="days" id="days" value="<?= calculateDays() ?>" required>
-            <br><br>
-            <label for="content">内容:</label>
-            <textarea name="content" id="content" rows="4" required></textarea>
-            <br>
-            <button type="submit" name="wri">投稿</button>
-        </form>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
-    </div>
-
-    <h2>投稿一覧</h2>
-    <table border="1">
-        <tr>
-            <th><a href="?order=asc">経過日数 ↑</a> | <a href="?order=desc">経過日数 ↓</a></th>
-            <th>内容</th>
-            <th>投稿日時</th>
-        </tr>
-        <?php foreach ($posts as $post): ?>
-            <tr>
-                <td><?= htmlspecialchars($post['days'], ENT_QUOTES, 'UTF-8') ?></td>
-                <td><?= nl2br(htmlspecialchars($post['content'], ENT_QUOTES, 'UTF-8')) ?></td>
-                <td><?= htmlspecialchars($post['post_at'], ENT_QUOTES, 'UTF-8') ?></td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+    <!-- モーダル用コンテナ -->
+    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
 
     <script>
-        function openModal() {
-            document.getElementById("postForm").style.display = "block";
-            document.getElementById("modalOverlay").style.display = "block";
-        }
+    function openModal(id) {
+        const modalContainer = document.getElementById('modal-container');
+        fetch(modal.php?id=${id})
+            .then(response => response.text())
+            .then(html => {
+                modalContainer.innerHTML = html;
+                modalContainer.style.display = 'block';
+            })
+            .catch(error => console.error('エラー:', error));
+    }
 
-        function closeModal() {
-            document.getElementById("postForm").style.display = "none";
-            document.getElementById("modalOverlay").style.display = "none";
-        }
+    function closeModal() {
+        const modalContainer = document.getElementById('modal-container');
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = '';
+    }
     </script>
-
-</body>
-</html>
+    <?php
+} catch (PDOException $e) {
+    echo "データベースエラー: " . $e->getMessage();
+}
+?>
