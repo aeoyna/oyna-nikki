@@ -195,7 +195,7 @@ try {
         modalContainer.innerHTML = '';
     }
     </script>
-    <?php
+<?php
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
 }
