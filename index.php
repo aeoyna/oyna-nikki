@@ -1,3 +1,10 @@
+確かに、コードを見る限り、編集時にもエラー「同じ日付の投稿はできません」が発生する可能性があります。これは、`days`フィールドが既に存在するかどうかを確認するためのチェックが、新規投稿と編集の両方に適用されているためです。
+
+編集時には、同じ投稿の日付を再度入力することがあり得るため、このチェックは少し変更する必要があります。
+
+編集時には、投稿IDを除外して重複をチェックする必要があります。以下のように、投稿IDを考慮して修正できます：
+
+```php
 <?php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -186,27 +193,3 @@ try {
 
     <!-- モーダル用コンテナ -->
     <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:
-
-    <script>
-    function openModal(id) {
-        const modalContainer = document.getElementById('modal-container');
-        fetch(`modal.php?id=${id}`)
-            .then(response => response.text())
-            .then(html => {
-                modalContainer.innerHTML = html;
-                modalContainer.style.display = 'block';
-            })
-            .catch(error => console.error('エラー:', error));
-    }
-
-    function closeModal() {
-        const modalContainer = document.getElementById('modal-container');
-        modalContainer.style.display = 'none';
-        modalContainer.innerHTML = '';
-    }
-    </script>
-<?php
-} catch (PDOException $e) {
-    echo "データベースエラー: " . $e->getMessage();
-}
-?>
