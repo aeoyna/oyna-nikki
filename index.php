@@ -36,9 +36,17 @@ try {
         }
 
         // 同じdaysが存在するかチェック
-        $checkSql = "SELECT COUNT(*) FROM blog WHERE days = :days";
-        $checkStmt = $pdo->prepare($checkSql);
-        $checkStmt->bindParam(':days', $days);
+        if (isset($_POST["edit_id"])) {
+            $edit_id = $_POST["edit_id"];
+            $checkSql = "SELECT COUNT(*) FROM blog WHERE days = :days AND id != :id";
+            $checkStmt = $pdo->prepare($checkSql);
+            $checkStmt->bindParam(':days', $days);
+            $checkStmt->bindParam(':id', $edit_id);
+        } else {
+            $checkSql = "SELECT COUNT(*) FROM blog WHERE days = :days";
+            $checkStmt = $pdo->prepare($checkSql);
+            $checkStmt->bindParam(':days', $days);
+        }
         $checkStmt->execute();
         $exists = $checkStmt->fetchColumn();
 
@@ -177,7 +185,7 @@ try {
     </style>
 
     <!-- モーダル用コンテナ -->
-    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:
 
     <script>
     function openModal(id) {
