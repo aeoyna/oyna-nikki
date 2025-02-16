@@ -166,14 +166,6 @@ try {
     </style>
 
 
-    <h2>新規投稿</h2>
-    <form action="nikki.php" method="post">
-        <div>本文</div>
-        <textarea name="content" rows="4" cols="50"></textarea>
-        <br>
-        <input type="submit" name="wri" value="保存">
-    </form>
-
     <!-- モーダル用コンテナ -->
     <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
 
