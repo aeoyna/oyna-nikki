@@ -1,4 +1,3 @@
-
 <?php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -180,7 +179,7 @@ try {
     <script>
     function openModal(id) {
         const modalContainer = document.getElementById('modal-container');
-        fetch(`modal.php?id=${id}`)
+        fetch(modal.php?id=${id})
             .then(response => response.text())
             .then(html => {
                 modalContainer.innerHTML = html;
@@ -189,17 +188,11 @@ try {
             .catch(error => console.error('エラー:', error));
     }
 
-    function closeNewPostModal() {
-    const modalContainer = document.getElementById('new-post-modal');
-    modalContainer.style.display = 'none';
-    modalContainer.innerHTML = ''; // モーダルの内容をクリア
-　　}
-　　document.getElementById('new-post-modal').addEventListener('click', function(event) {
-        if (event.target === this) { // 背景をクリックした場合
-            closeNewPostModal();
-        }
-    });
-
+    function closeModal() {
+        const modalContainer = document.getElementById('modal-container');
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = '';
+    }
     </script>
     <?php
 } catch (PDOException $e) {
