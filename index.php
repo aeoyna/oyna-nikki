@@ -1,4 +1,3 @@
-
 <?php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -64,7 +63,7 @@ try {
             $stmt->execute();
 
             // データの追加または更新に成功したらリダイレクト
-            header("Location: nikki.php");
+            header("Location: index.php");
             exit; // リダイレクト後はスクリプトの実行を停止
         }
     }
@@ -72,14 +71,14 @@ try {
     // 並び順変更のリンク
     $newOrder = $order === 'ASC' ? 'desc' : 'asc';
     $orderLabel = $order === 'ASC' ? '小さい順' : '大きい順';
-    echo "<a href='nikki.php?order=$newOrder' style='margin-bottom: 20px; display: inline-block;'>$orderLabelに並び替え</a>";
+    echo "<a href='index.php?order=$newOrder' style='margin-bottom: 20px; display: inline-block;'>$orderLabelに並び替え</a>";
 
     // daysを計算して表示
     $calculatedDays = calculateDays();
     echo "<h2 style='display: inline;'>今日は $calculatedDays 日</h2>";
 
     // 検索フォームを右に配置
-    echo '<form action="nikki.php" method="get" style="display: inline-block; margin-left: 20px;">';
+    echo '<form action="index.php" method="get" style="display: inline-block; margin-left: 20px;">';
     echo '<input type="text" name="search" placeholder="検索キーワードを入力" style="padding: 5px;">';
     echo '<input type="submit" value="検索" style="padding: 5px;">';
     echo '</form>';
@@ -116,7 +115,12 @@ try {
     
     <button class="floating-btn" onclick="openNewPostModal()">+</button>
     
-    <div id="new-post-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+    <div id="new-post-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+        <div id="modal-content" style="position:relative; background:white; margin:auto; padding:20px; width:80%; top:10%; border-radius:10px;">
+            <!-- モーダル内の閉じるボタン -->
+            <span onclick="closeNewPostModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>
+        </div>
+    </div>
     
     <script>
     function openNewPostModal() {
@@ -124,7 +128,7 @@ try {
         fetch('new.php')
             .then(response => response.text())
             .then(html => {
-                modalContainer.innerHTML = html;
+                document.getElementById('modal-content').innerHTML = '<span onclick="closeNewPostModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>' + html;
                 modalContainer.style.display = 'block';
             })
             .catch(error => console.error('エラー:', error));
@@ -133,7 +137,14 @@ try {
     function closeNewPostModal() {
         const modalContainer = document.getElementById('new-post-modal');
         modalContainer.style.display = 'none';
-        modalContainer.innerHTML = '';
+    }
+    
+    // モーダル外をクリックしたときにモーダルを閉じる
+    window.onclick = function(event) {
+        const modalContainer = document.getElementById('new-post-modal');
+        if (event.target == modalContainer) {
+            closeNewPostModal();
+        }
     }
     </script>
     
@@ -164,7 +175,6 @@ try {
         box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
     }
     </style>
-
 
     <!-- モーダル用コンテナ -->
     <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
