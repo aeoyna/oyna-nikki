@@ -189,11 +189,17 @@ try {
             .catch(error => console.error('エラー:', error));
     }
 
-    function closeModal() {
-        const modalContainer = document.getElementById('modal-container');
-        modalContainer.style.display = 'none';
-        modalContainer.innerHTML = '';
-    }
+    function closeNewPostModal() {
+    const modalContainer = document.getElementById('new-post-modal');
+    modalContainer.style.display = 'none';
+    modalContainer.innerHTML = ''; // モーダルの内容をクリア
+　　}
+　　document.getElementById('new-post-modal').addEventListener('click', function(event) {
+        if (event.target === this) { // 背景をクリックした場合
+            closeNewPostModal();
+        }
+    });
+
     </script>
     <?php
 } catch (PDOException $e) {
