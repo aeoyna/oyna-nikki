@@ -1,4 +1,3 @@
-
 <?php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -187,3 +186,27 @@ try {
 
     <!-- モーダル用コンテナ -->
     <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:
+
+    <script>
+    function openModal(id) {
+        const modalContainer = document.getElementById('modal-container');
+        fetch(`modal.php?id=${id}`)
+            .then(response => response.text())
+            .then(html => {
+                modalContainer.innerHTML = html;
+                modalContainer.style.display = 'block';
+            })
+            .catch(error => console.error('エラー:', error));
+    }
+
+    function closeModal() {
+        const modalContainer = document.getElementById('modal-container');
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = '';
+    }
+    </script>
+<?php
+} catch (PDOException $e) {
+    echo "データベースエラー: " . $e->getMessage();
+}
+?>
