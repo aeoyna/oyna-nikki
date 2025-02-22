@@ -32,7 +32,7 @@ try {
                     <input type="text" name="days" value="<?php echo htmlspecialchars($post['days'], ENT_QUOTES, 'UTF-8'); ?>" style="width: 100%; padding: 10px; box-sizing: border-box;">
                     <input type="hidden" name="edit_id" value="<?php echo $post['id']; ?>">
                     <div>本文</div>
-                    <textarea name="content" rows="6" cols="50" style="width: 100%; font-size: 1rem; padding: 10px; box-sizing: border-box;"><?php echo htmlspecialchars($post['content'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea name="content" rows="10" cols="50" style="width: 100%; font-size: 1rem; padding: 10px; box-sizing: border-box;"><?php echo htmlspecialchars($post['content'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                     <br>
                     <input type="submit" name="wri" value="更新" style="margin-top: 10px; padding: 10px 20px; border: none; background: #28a745; color: white; border-radius: 4px; cursor: pointer;">
                     <span style="margin-left: 10px;"><strong>投稿日時:</strong> <?php echo htmlspecialchars($post['post_at'], ENT_QUOTES, 'UTF-8'); ?></span>
