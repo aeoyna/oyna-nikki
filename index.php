@@ -191,7 +191,7 @@ try {
     <script>
     function openModal(id) {
         const modalContainer = document.getElementById('modal-container');
-        fetch(modal.php?id=${id})
+        fetch(`modal.php?id=${id}`)
             .then(response => response.text())
             .then(html => {
                 modalContainer.innerHTML = html;
