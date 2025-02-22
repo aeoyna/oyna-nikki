@@ -198,8 +198,7 @@ try {
         fetch(`modal.php?id=${id}`)
             .then(response => response.text())
             .then(html => {
-                document.getElementById('modal-content').innerHTML = 
-                    '<span onclick="closeModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>' + html;
+                document.getElementById('modal-content').innerHTML = html;
                     modalContainer.style.display = 'flex';
                 
             })
