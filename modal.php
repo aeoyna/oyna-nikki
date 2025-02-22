@@ -49,7 +49,7 @@ try {
                 /* レスポンシブスタイル */
                 @media screen and (max-width: 768px) {
                     .modal {
-                        width: 90%;
+                        width: 100%;
                         margin: 20px auto;
                         padding: 15px;
                         font-size: 0.9rem;
