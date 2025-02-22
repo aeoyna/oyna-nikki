@@ -185,7 +185,12 @@ try {
     </style>
 
     <!-- モーダル用コンテナ -->
-    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:
+    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+        <div id="modal-content" style="position:relative; background:white; margin:auto; padding:20px; width:80%; top:10%; border-radius:10px;">
+            <!-- モーダル内の閉じるボタン -->
+            <span onclick="closeModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>
+        </div>
+    </div>
 
     <script>
     function openModal(id) {
@@ -193,7 +198,8 @@ try {
         fetch(`modal.php?id=${id}`)
             .then(response => response.text())
             .then(html => {
-                modalContainer.innerHTML = html;
+                document.getElementById('modal-content').innerHTML = 
+                    '<span onclick="closeModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>' + html;
                 modalContainer.style.display = 'block';
             })
             .catch(error => console.error('エラー:', error));
@@ -202,9 +208,19 @@ try {
     function closeModal() {
         const modalContainer = document.getElementById('modal-container');
         modalContainer.style.display = 'none';
-        modalContainer.innerHTML = '';
+    }
+
+    // モーダル外をクリックしたときにモーダルを閉じる
+    window.onclick = function(event) {
+        const modalContainer = document.getElementById('modal-container');
+        if (event.target == modalContainer) {
+            closeModal();
+        }
     }
     </script>
+</body>
+</html>
+
 <?php
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
