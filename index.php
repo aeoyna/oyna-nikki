@@ -1,4 +1,5 @@
 <?php
+//index.php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
 $username = 'oyna_0';
@@ -185,22 +186,16 @@ try {
     </style>
 
     <!-- モーダル用コンテナ -->
-    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
-        <div id="modal-content" style="position:relative; background:white; margin:auto; height: 300px; padding:30px; width:90%; top:10%; border-radius:10px;">
-            <!-- モーダル内の閉じるボタン -->
-            <span onclick="closeModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>
-        </div>
-    </div>
+    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
 
     <script>
     function openModal(id) {
         const modalContainer = document.getElementById('modal-container');
-        fetch(`modal.php?id=${id}`)
+        fetch(modal.php?id=${id})
             .then(response => response.text())
             .then(html => {
-                document.getElementById('modal-content').innerHTML = html;
-                    modalContainer.style.display = 'flex';
-                
+                modalContainer.innerHTML = html;
+                modalContainer.style.display = 'block';
             })
             .catch(error => console.error('エラー:', error));
     }
@@ -208,20 +203,10 @@ try {
     function closeModal() {
         const modalContainer = document.getElementById('modal-container');
         modalContainer.style.display = 'none';
-    }
-
-    // モーダル外をクリックしたときにモーダルを閉じる
-    window.onclick = function(event) {
-        const modalContainer = document.getElementById('modal-container');
-        if (event.target == modalContainer) {
-            closeModal();
-        }
+        modalContainer.innerHTML = '';
     }
     </script>
-</body>
-</html>
-
-<?php
+    <?php
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
 }
