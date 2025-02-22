@@ -24,7 +24,7 @@ try {
 
         if ($post) {
             ?>
-            <div class="modal" style="background: white; padding: 20px; margin: 50px auto; width: 100%; max-width: 100px; min-height: 300px; position: relative; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 8px;">
+            <div class="modal" style="background: white; padding: 20px; margin: 50px auto; width: 200%; max-width: 200px; min-height: 300px; position: relative; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 8px;">
                 <p><strong><?php echo htmlspecialchars($post['days'], ENT_QUOTES, 'UTF-8'); ?> 日</strong></p>
                 <form action="index.php" method="post" style="margin-bottom: 20px;">
 　　　　　　　　　　<!-- days をテキスト入力として変更 -->
