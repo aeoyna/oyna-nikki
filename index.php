@@ -196,11 +196,11 @@ try {
     function openModal(id) {
         const modalContainer = document.getElementById('modal-container');
         fetch(`modal.php?id=${id}`)
-        modalContainer.style.display = 'flex';
             .then(response => response.text())
             .then(html => {
                 document.getElementById('modal-content').innerHTML = 
                     '<span onclick="closeModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>' + html;
+                    modalContainer.style.display = 'flex';
                 
             })
             .catch(error => console.error('エラー:', error));
