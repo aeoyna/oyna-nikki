@@ -124,8 +124,8 @@ try {
     
     <button class="floating-btn" onclick="openNewPostModal()">+</button>
     
-    <div id="new-post-modal" style="display:none; position:fixed; top:0; left:0; width:600%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
-        <div id="modal-content" style="position:relative; background:white; margin:auto; padding:20px; width:200%; top:10%; border-radius:10px;">
+    <div id="new-post-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
+        <div id="modal-content" style="position:relative; background:white; margin:auto; padding:20px; width:600%; top:10%; border-radius:10px;">
             <!-- モーダル内の閉じるボタン -->
             <span onclick="closeNewPostModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>
         </div>
