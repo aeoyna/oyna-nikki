@@ -128,4 +128,86 @@ try {
         <div id="modal-content" style="position:relative; background:white; margin:auto; padding:20px; width:100%; top:10%; border-radius:10px;">
             <!-- モーダル内の閉じるボタン -->
             <span onclick="closeNewPostModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>
-        </div
+        </div>
+    </div>
+    
+    <script>
+    function openNewPostModal() {
+        const modalContainer = document.getElementById('new-post-modal');
+        fetch('new.php')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('modal-content').innerHTML = '<span onclick="closeNewPostModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>' + html;
+                modalContainer.style.display = 'block';
+            })
+            .catch(error => console.error('エラー:', error));
+    }
+    
+    function closeNewPostModal() {
+        const modalContainer = document.getElementById('new-post-modal');
+        modalContainer.style.display = 'none';
+    }
+    
+    // モーダル外をクリックしたときにモーダルを閉じる
+    window.onclick = function(event) {
+        const modalContainer = document.getElementById('new-post-modal');
+        if (event.target == modalContainer) {
+            closeNewPostModal();
+        }
+    }
+    </script>
+    
+    <style>
+    .floating-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background-color: #007bff;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        border: none;
+        outline: none;
+        transition: 0.3s;
+    }
+    
+    .floating-btn:hover {
+        background-color: #0056b3;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    }
+    </style>
+
+    <!-- モーダル用コンテナ -->
+    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+
+    <script>
+    function openModal(id) {
+        const modalContainer = document.getElementById('modal-container');
+        fetch(`modal.php?id=${id}`)
+            .then(response => response.text())
+            .then(html => {
+                modalContainer.innerHTML = html;
+                modalContainer.style.display = 'block';
+            })
+            .catch(error => console.error('エラー:', error));
+    }
+
+    function closeModal() {
+        const modalContainer = document.getElementById('modal-container');
+        modalContainer.style.display = 'none';
+        modalContainer.innerHTML = '';
+    }
+    </script>
+    <?php
+} catch (PDOException $e) {
+    echo "データベースエラー: " . $e->getMessage();
+}
+?>
