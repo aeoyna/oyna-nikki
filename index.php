@@ -186,7 +186,7 @@ try {
 
     <!-- モーダル用コンテナ -->
     <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;">
-        <div id="modal-content" style="position:relative; background:white; margin:auto; padding:30px; width:90%; top:50%; border-radius:10px;">
+        <div id="modal-content" style="position:relative; background:white; margin:auto; padding:30px; width:190%; top:10%; border-radius:10px;">
             <!-- モーダル内の閉じるボタン -->
             <span onclick="closeModal()" style="position:absolute; top:10px; right:20px; cursor:pointer;">&times;</span>
         </div>
