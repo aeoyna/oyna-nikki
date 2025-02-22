@@ -186,7 +186,7 @@ try {
     </style>
 
     <!-- モーダル用コンテナ -->
-    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
+    <div id="modal-container" style="display:none; position:fixed; top:0; left:0; width:50%; height:100%; background:rgba(0,0,0,0.5); z-index:1000;"></div>
 
     <script>
     function openModal(id) {
