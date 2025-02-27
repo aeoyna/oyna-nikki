@@ -76,12 +76,6 @@ try {
             exit; // リダイレクト後はスクリプトの実行を停止
         }
     }
-    <style>
-        h1 {
-            font-family: "ＭＳ Ｐ明朝", serif;
-            color: blue;
-        }
-    </style>
     
     echo "<h1>星霜拾遺</h1>";
     // 並び順変更のリンク
