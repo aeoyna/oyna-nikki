@@ -120,7 +120,6 @@ try {
         echo "<p style='margin: 0; padding: 5px;'><strong>" . htmlspecialchars($row["days"], ENT_QUOTES, 'UTF-8') . " 日</strong></p>";
         echo "<p style='margin: 0; padding: 5px;'>" . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . "</p>";
         echo "</div>";
-        echo "<hr>";
         echo "</div>";
     }
 
