@@ -114,7 +114,7 @@ try {
     // データ表示
     foreach ($stmt as $row) {
         echo "<div class='post' onclick='openModal(" . $row["id"] . ")' style='cursor: pointer; 
-              border-radius: 12px; background: #e0e0e0; box-shadow: 7px 7px 14px #c2e4f0, -7px -7px 14px #ffffff; 
+              border-radius: 12px; background: #c2e4f0; box-shadow: 7px 7px 14px #bebebe, -7px -7px 14px #ffffff; 
               padding: 20px; margin: 10px 0;'>";
         echo "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center;'>";
         echo "<p style='margin: 0; padding: 5px;'><strong>" . htmlspecialchars($row["days"], ENT_QUOTES, 'UTF-8') . " 日</strong></p>";
