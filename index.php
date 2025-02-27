@@ -113,11 +113,15 @@ try {
 
     // データ表示
     foreach ($stmt as $row) {
-        echo "<div class='post' onclick='openModal(" . $row["id"] . ")' style='cursor: pointer;'>";
+        echo "<div class='post mdl-card mdl-shadow--2dp' onclick='openModal(" . $row["id"] . ")' style='cursor: pointer;'>";
+        echo "<div class='mdl-card__supporting-text'>";
         echo "<p><strong>" . htmlspecialchars($row["days"], ENT_QUOTES, 'UTF-8') . " 日</strong></p>";
         echo "<p>" . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . "</p>";
+        echo "</div>";
         echo "<hr>";
         echo "</div>";
+    }
+
     }
 
     // 新規投稿用フォーム
