@@ -77,7 +77,8 @@ try {
         }
     }
     
-    echo "<h1 style="font-family: 'ＭＳ Ｐ明朝', serif; text-align: center; position: fixed;">星霜拾遺</h1>";
+    echo "<h1 style=\"font-family: 'ＭＳ Ｐ明朝', serif; text-align: center; position: fixed;\">星霜拾遺</h1>";
+
     // 並び順変更のリンク
     $newOrder = $order === 'ASC' ? 'desc' : 'asc';
     $orderLabel = $order === 'ASC' ? '小さい順' : '大きい順';
