@@ -114,29 +114,12 @@ try {
 
     // データ表示
     foreach ($stmt as $row) {
-        echo "<style>
-            .post {
-                cursor: pointer;
-                border-radius: 12px; 
-                background: #fcfcfc; 
-                box-shadow: 7px 7px 14px #bebebe, -7px -7px 14px #ffffff; 
-                padding: 20px; 
-                margin: 10px 0;
-            }
-            .neumorphic-content {
-                border-radius: 10px;
-                background: #e0e0e0;
-                box-shadow: 7px 7px 14px #bebebe, -7px -7px 14px #ffffff;
-                padding: 15px;
-                margin: 10px 0;
-            }
-            </style>";
-        echo "<div class='post' onclick='openModal(" . $row["id"] . ")'>";
+        echo "<div class='post' onclick='openModal(" . $row["id"] . ")' style='cursor: pointer; 
+              border-radius: 12px; background: #fcfcfc; box-shadow: 7px 7px 14px #bebebe, -7px -7px 14px #ffffff; 
+              padding: 20px; margin: 10px 0;'>";
         echo "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center;'>";
-        echo "<div class='neumorphic-content'>";
         echo "<p style='margin: 0; padding: 5px;'><strong>" . htmlspecialchars($row["days"], ENT_QUOTES, 'UTF-8') . " 日</strong></p>";
         echo "<p style='margin: 0; padding: 5px;'>" . htmlspecialchars($row["content"], ENT_QUOTES, 'UTF-8') . "</p>";
-        echo "</div>";
         echo "</div>";
         echo "</div>";
     }
