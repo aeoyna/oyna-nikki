@@ -1,4 +1,5 @@
 <?php
+echo '<title>星霜拾遺</title>';
 //index.php
 // データベース接続情報
 $dsn = 'mysql:host=localhost;dbname=oyna_0;charset=utf8';
@@ -217,4 +218,8 @@ try {
 } catch (PDOException $e) {
     echo "データベースエラー: " . $e->getMessage();
 }
+echo '</html>';
+
 ?>
+
+
